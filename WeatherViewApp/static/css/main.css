@@ -1,0 +1,67 @@
+* {
+	margin: 0;
+	padding: 0;
+}
+
+body {
+	background-color: rgb(16, 174, 181);
+}
+
+#title_div {
+	background-image: url(../img/bg.png);
+	background-size: 100%;
+	width: 900px;
+	height: 220px;
+	margin: 0 auto;
+}
+
+#main_div {
+	background-color: white;
+	width: 1000px;
+	height: 1000px;
+	margin: 0 auto;
+	border-radius: 10px;
+}
+
+#title1{
+	padding-top: 80px;
+	color: white;
+	font-size: 20px;
+}
+
+#title2{
+	font-size: 40px;
+	color: white;
+	padding: 5px 0px;
+}
+
+#title3{
+	color: white;
+	background-color: rgb(12,161,174);
+	width: -webkit-fit-content;
+	width: -moz-fit-content;
+	padding: 5px;
+	border-radius: 15px;
+}
+
+#data_info{
+	width: 960px;
+	height: 120px;
+	background-color: rgb(245,245,245);
+	margin: 0px auto;
+	margin-top: 10px;
+	border-radius: 5px;
+}
+
+#data_info div{
+	float: left;
+	width: 25%;
+	text-align: center;
+}
+
+#china_map{
+	width: 1000px;
+	height: 800px;
+	/*background-color: pink;*/
+	padding-top: 10px;
+}

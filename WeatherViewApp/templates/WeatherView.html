@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8" />
+		<title>全国气象地图</title>
+		<link rel="stylesheet" type="text/css" href="../static/css/main.css" />
+		<script src="../static/js/echarts.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../static/js/map/china.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../static/js/data.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../static/js/data_else.js" type="text/javascript" charset="utf-8"></script>
+	</head>
+
+	<body>
+		<div id="title_div">
+			<div id="title1">全国气象地图</div>
+			<div id="title2">气象实时大数据报告</div>
+			<div id="title3">共 2,885,473,145 人次浏览</div>
+		</div>
+<!--		{% for predict in predicts %}-->
+<!--		{{predict["predict_id"]}}:-->
+<!--			{{predict['tem_ave']}}-->
+<!--            {{predict['tem_max']}}-->
+<!--            {{predict['tem_min']}}-->
+<!--            {{predict['rain']}}-->
+<!--            {{predict['cloud']}}-->
+<!--		{%endfor%}-->
+		<div id="main_div">
+			<div id="data">
+				<h2 style="padding-top: 30px; padding-left: 20px;">中国实时气象</h2>
+				<p style="padding-left: 20px; color: rgb(169,169,169);">更新时间：{{timenow}}</p>
+				<div id="data_info">
+					
+					<div id="confirmed_data">
+						<h2 style="color: orangered;padding-top: 25px;">青岛</h2>
+						<h3 style="padding-top: 5px;">当前地区</h3>
+						<h5 style="color: darkgray; padding-top: 10px;"><span style="color: red;"></span></h5>
+					</div>
+
+					<div id="suspected_data">
+						<h5 style="color: orange;padding-top: 10px;">第二天 天气预报：</h5>
+						<h5 style="padding-top: 12px;">平均气温 {{predict1["tem_ave"]}}度 最高气温 {{predict1["tem_max"]}}度  </h5>
+						<h5 style="padding-top: 5px ;" >最低气温 {{predict1["tem_min"]}}度 降雨量 {{predict1["rain"]}}</h5>
+						<h5 style="padding-top: 5px ;" >风力 {{predict1["cloud"]}}</h5>
+					</div>
+					
+					<div id="cured_data">
+						<h5 style="color: orange;padding-top: 10px;">第三天 天气预报：</h5>
+						<h5 style="padding-top: 12px;">平均气温 {{predict2["tem_ave"]}}度 最高气温 {{predict2["tem_max"]}}度  </h5>
+						<h5 style="padding-top: 5px ;" >最低气温 {{predict2["tem_min"]}}度 降雨量 {{predict2["rain"]}}</h5>
+						<h5 style="padding-top: 5px ;" >风力 {{predict2["cloud"]}}</h5>
+					</div>
+					
+					<div id="death_data">
+						<h5 style="color: orange;padding-top: 10px;">第四天 天气预报：</h5>
+						<h5 style="padding-top: 12px;">平均气温 {{predict3["tem_ave"]}}度 最高气温 {{predict3["tem_max"]}}度  </h5>
+						<h5 style="padding-top: 5px ;" >最低气温 {{predict3["tem_min"]}}度 降雨量 {{predict3["rain"]}}</h5>
+						<h5 style="padding-top: 5px ;" >风力 {{predict3["cloud"]}}</h5>
+						<h5 style="padding-top: 5px ;" ></h5>
+					</div>
+				</div>
+			</div>
+			<div id="china_map">
+
+			</div>
+		</div>
+	</body>
+	<script type="text/javascript">
+		var myChart = echarts.init(document.getElementById('china_map'));
+		var chinaPieces = [
+			{
+				color: '#FFFFFF'
+			}
+		];
+		
+		showMap(true,'中国');
+		function showMap(isChina, showName) { 
+			var tmpSeriesData = [];
+			
+			if(isChina) {
+				data.forEach((item) => {
+					var ser = {
+						
+						name: item.provinceShortName,
+						locationId: '全称：',
+						today_time: item.provinceName,
+						update_time: '',
+						today_wether: '单击即可查看省内地图',
+						today_temperature: '',
+						today_ziwaixian: '',
+						today_yundong: '数据来源：',
+						today_wear: '中国天气网',
+
+					};
+					tmpSeriesData.push(ser);
+				});
+			} else {
+
+				data.forEach((item) => {
+					if(item.provinceShortName === showName){
+						item.cities.forEach((it) => {
+							var ser = {
+								name: it.cityName,
+								locationId: it.locationId,
+								today_time: it.today_time,
+								update_time: it.update_time,
+								today_wether: it.today_wether,
+								today_temperature: it.today_temperature,
+								today_ziwaixian: it.today_ziwaixian,
+								today_yundong: it.today_yundong,
+								today_wear: it.today_wear,
+							}
+						tmpSeriesData.push(ser);	
+						});
+					}
+				});
+			}
+
+			var option = {
+				title: {
+					text: showName + '天气可视化',
+					left: 'center'
+				},
+				visualMap: {
+					type: 'piecewise',
+					pieces: chinaPieces,
+					textStyle: {
+						color: '#FFFFFF'
+					},
+					inRange: {
+						color: ['yellow']
+					},
+					top: '60%'
+				},
+				tooltip: {
+					show: true,
+					formatter:
+							function(param) {
+						return param.data.name + '<br>'  +
+								param.data.locationId + '<br>'  +
+								param.data.today_time + '<br>'  +
+								param.data.update_time + '<br>'  +
+								param.data.today_wether + '<br>'  +
+								param.data.today_temperature + '<br>'  +
+								param.data.today_ziwaixian + '<br>'  +
+								param.data.today_yundong + '<br>'  +
+								param.data.today_wear;
+					}
+				},
+				series: [{
+					type: 'map',
+					map: isChina ? 'china' : showName,
+					data : tmpSeriesData,
+					top: '3%'
+				}]
+			};
+			myChart.setOption(option);
+			
+			if(isChina){
+				myChart.on('click',function(param){
+					for(var i =0;i < provincesText.length;i++){
+						if(param.name === provincesText[i]){
+							showProvinceMap(provincesText[i],provinces[i]);
+								break;
+						}
+					}
+				});
+			}else{
+				myChart.on('dblclick',function(){
+					showMap(true,'中国');
+				})
+			}
+		}
+			function showProvinceMap(proText,pro){
+				var script = document.createElement("script");
+				script.type = "text/javascript";
+				script.src="../static/js/map/province/" + pro +".js";
+				script.onload = function(){
+					showMap(false,proText);
+				}
+				document.getElementsByTagName("head")[0].appendChild(script);
+			}
+	</script>
+</html>
