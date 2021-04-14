@@ -1,0 +1,2 @@
+# WeatherViewable
+初步研发了一套基于机器学习方法Scikit-learn(sklearn)与Python结合实现的气象预报以及气象动态展示系统，本系统分为两个模块，第一个模块为气象信息动态展示模块。
